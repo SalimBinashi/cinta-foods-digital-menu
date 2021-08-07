@@ -54,8 +54,25 @@ export default function Menu() {
         var mainDrinks = jsonQuery('drinks[**][**]', {data: drinksList}).value
 
         // concatenate all objects to one
-        // Array.prototype.push.apply(mainMeal,mainSides,mainDrinks); 
-          console.log("THIS IS THE ALL: ", mainMeal);
+        function merge(source, target) {
+          Object.keys(source).forEach(function (key) {
+                if (!source[key]) {
+                    return;
+                }
+                if (typeof source[key] === 'object') {
+                    target[key] = target[key] || (Array.isArray(source[key]) ? [] : {});
+                    return merge(source[key], target[key]);
+                }
+                target[key] = source[key];
+            });
+        }
+        var allAvailable = {};
+        merge(mainsList, allAvailable);
+        merge(sidesList, allAvailable);
+        merge(drinksList, allAvailable);
+        
+        // const allAvailable= JSON.parse(mainsList);
+          console.log("THIS IS THE ALL: ", allAvailable);
         return (
           <div>
             <Provider>
@@ -66,7 +83,7 @@ export default function Menu() {
                 <Extras type="Sides" items={mainSides} />
                 <Extras type="Drinks" items={mainDrinks} />
               </aside>
-              <Total />
+              <Total data = {allAvailable}/>
             </div>
           </Provider>
           </div>

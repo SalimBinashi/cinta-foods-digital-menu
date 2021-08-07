@@ -1,8 +1,7 @@
 import React, { useContext } from "react";
 import { Context } from "../Context";
-import data from "../data";
 
-export default function Total() {
+export default function Total({ data }) {
   const [items] = useContext(Context);
   console.log("DATA IS: ", data);
   const totalPrice = Object.keys(items).reduce((acc, curr) => {
@@ -14,7 +13,7 @@ export default function Total() {
   return (
     <div className="total">
       <span className="total-title">Total:</span>
-      <span className="total-price">${totalPrice}</span>
+      <span className="total-price">Ksh. {totalPrice}</span>
     </div>
   );
 }
