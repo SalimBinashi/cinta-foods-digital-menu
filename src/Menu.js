@@ -1,5 +1,4 @@
 import React , { useState, useEffect } from 'react'
-import Logo from "./components/Logo";
 import Mains from "./components/Mains";
 import Extras from "./components/Extras";
 import Total from "./components/Total";
@@ -77,7 +76,7 @@ export default function Menu() {
           <div>
             <Provider>
             <div className="menu">
-              <Logo/>
+              <img src = "./cinta foods 2.png" alt="Cinta Foods Restaurant"/>
               <Mains meals={mainMeal} />
               <aside className="aside">
                 <Extras type="Sides" items={mainSides} />

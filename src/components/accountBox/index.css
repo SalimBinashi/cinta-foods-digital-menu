@@ -1,0 +1,81 @@
+
+/* Box container for the login and register */
+.BoxContainer {
+  width: 280px;
+  min-height: 550px;
+  flex-direction: column;
+  border-radius: 19px;
+  background-color: #fff;
+  box-shadow: 0 0 2px rgba(15, 15, 15, 0.28);
+  position: relative;
+  overflow: hidden;
+}
+/*Top container that harbours the backdrop*/
+.TopContainer {
+  width: 100%;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 1.8em;
+  padding-bottom: 5em;
+}
+/* Animation for the yellow backdrop */
+.BackDropAnim {
+  width: 100%;
+  height: 550px;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  border-radius: 50%;
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(68, 5, 34, 1) 100%,
+    rgba(1, 55, 93, 1) 100%
+  );
+  top: -55%;
+  right: -20%;
+}
+/*Container with the content within the backdrop*/
+.HeaderContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: left;
+  justify-content: center;
+  /* padding-top: 70%; */
+}
+@media screen and (min-width: 630px) {
+  .HeaderContainer {
+    padding-top: 30%;
+  }
+}
+@media screen and (max-width: 630px) {
+  .HeaderContainer {
+    padding-top: 70%;
+  }
+}
+.HeaderText h2 {
+  font-size: 30px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  line-height: 1.24;
+  color: #fff;
+  z-index: 10;
+}
+
+.SmallText h5 {
+  color: #fff;
+  font-weight: 500;
+  font-size: 11px;
+  z-index: 40%;
+}
+
+.InnerContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

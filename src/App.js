@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import "./styles.css";
 import Menu from "./Menu";
+import { AccountBox } from './components/accountBox';
 
 export default function App() {
   return (
@@ -10,6 +11,7 @@ export default function App() {
       <Router>
         <Switch>
           <Route exact path="/"  component={Menu} />
+          <Route exact path="/login"  component={AccountBox} />
         </Switch>
       </Router>
     </div>
