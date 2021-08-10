@@ -4,12 +4,37 @@ import React, { useState, useEffect } from "react";
 import { FormContainer, Input, SubmitButton } from "../common/common";
 import { Marginer } from "../marginer";
 import "../common/common.css";
+import toast, { Toaster } from 'react-hot-toast';
+// import { View } from 'react-view';
+// import Modal from 'react-modal';
+// import Text from 'react-text';
+// import { ActivityIndicator } from 'react-activity-indicator';
+
 export function LoginForm(props) {
   const [table_number, settableNumber] = useState([]);
   const [password, setPassword] = useState("");
   const [selectedTable, setSelectedTable] = useState("Select a Table");
+  const [buttonText, setButtonText] = useState("Signin");
 
 
+  // run the progress bar
+  const isLoading = () => {
+      setButtonText("Loading...")
+    }
+  const isNotLoading = () => {
+      setButtonText("Signin");
+    }
+// //customer progress bar
+//   const CustomProgressBar = ({ visible }) => (
+//     <Modal onRequestClose={() => null} visible={visible}>
+//       <View style={{ flex: 1, backgroundColor: '#dcdcdc', alignItems: 'center', justifyContent: 'center' }}>
+//         <View style={{ borderRadius: 10, backgroundColor: 'white', padding: 25 }}>
+//           <Text style={{ fontSize: 20, fontWeight: '200' }}>Loading</Text>
+//           <ActivityIndicator size="large" />
+//         </View>
+//       </View>
+//     </Modal>
+//   );
   //use effect to call methods when component is created
   useEffect(() => {
       showTables();
@@ -17,14 +42,17 @@ export function LoginForm(props) {
 
   // login method
   const loginTable = () => {
+    isLoading();
     Axios.post("http://localhost:3001/tables/login", {
       table_number: selectedTable,
       password: password,
     }).then((response) => {
-      if (response.data.message) {
-        console.log(response.data.message);
+      if (response.data.message === "Logged in successfully") {
+          isNotLoading();
+          toast.success(response.data.message);
       } else {
-        console.log(response.data.message);
+          isNotLoading();
+          toast.error(response.data.message);
       }
     });
   };
@@ -46,7 +74,8 @@ export function LoginForm(props) {
   //obtain an array of the data
   var tablesList = jsonQuery('tables[**][**]', {data: table_number}).value
   console.log(selectedTable);
-  return (
+//   inProgress ? <CustomProgressBar/> :
+  return  (
     <div className="CommonBoxContainer">
       <FormContainer>
         <select onChange={handleTableChange} className="SelectBox">
@@ -65,8 +94,9 @@ export function LoginForm(props) {
       <Marginer direction="vertical" margin={5} />
       <Marginer direction="vertical" margin="1.6em" />
       <SubmitButton type="submit" onClick={loginTable}>
-        Signin
+        {buttonText}
       </SubmitButton>
+      <Toaster className="toast"/>
     </div>
   );
 }

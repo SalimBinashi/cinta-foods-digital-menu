@@ -47,6 +47,11 @@
     align-items: center;
     background-color: #512938
 }
+.toast {
+    border: 1px solid #713200;
+    padding: 16px;
+    color: #713200;
+}
  .Input input{
     outline: none;
     height: 42px;
