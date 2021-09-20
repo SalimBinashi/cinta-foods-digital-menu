@@ -5,6 +5,8 @@ import { FormContainer, Input, SubmitButton } from "../common/common";
 import { Marginer } from "../marginer";
 import "../common/common.css";
 import toast, { Toaster } from 'react-hot-toast';
+import { useHistory } from 'react-router-dom';
+import Session from 'react-session-api';
 // import { View } from 'react-view';
 // import Modal from 'react-modal';
 // import Text from 'react-text';
@@ -15,7 +17,8 @@ export function LoginForm(props) {
   const [password, setPassword] = useState("");
   const [selectedTable, setSelectedTable] = useState("Select a Table");
   const [buttonText, setButtonText] = useState("Signin");
-
+  // introduce history for session control
+  const history = useHistory();
 
   // run the progress bar
   const isLoading = () => {
@@ -39,7 +42,6 @@ export function LoginForm(props) {
   useEffect(() => {
       showTables();
   }, []);
-
   // login method
   const loginTable = () => {
     isLoading();
@@ -50,6 +52,9 @@ export function LoginForm(props) {
       if (response.data.message === "Logged in successfully") {
           isNotLoading();
           toast.success(response.data.message);
+          Session.set('loggedIn', true);
+          Session.set('table_number',selectedTable);
+          history.push('/dashboard');
       } else {
           isNotLoading();
           toast.error(response.data.message);
@@ -75,11 +80,11 @@ export function LoginForm(props) {
   var tablesList = jsonQuery('tables[**][**]', {data: table_number}).value
   console.log(selectedTable);
 //   inProgress ? <CustomProgressBar/> :
-  return  (
+  return (
     <div className="CommonBoxContainer">
       <FormContainer>
         <select onChange={handleTableChange} className="SelectBox">
-            <option value="" disabled="true" selected>Select a Table</option>
+            <option value="" disabled={true} selected>Select a Table</option>
             {tablesList.map((selectedTable) => 
             <option value={selectedTable.table_number} key={selectedTable.label}>{selectedTable.table_number}</option>)}
         </select>
