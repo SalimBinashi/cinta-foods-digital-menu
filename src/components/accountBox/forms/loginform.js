@@ -45,7 +45,8 @@ export function LoginForm(props) {
   // login method
   const loginTable = () => {
     isLoading();
-    Axios.post("http://localhost:3001/tables/login", {
+    
+    Axios.post(`${process.env.REACT_APP_BASE_URL}/tables/login`, {
       table_number: selectedTable,
       password: password,
     }).then((response) => {
@@ -54,6 +55,7 @@ export function LoginForm(props) {
           toast.success(response.data.message);
           Session.set('loggedIn', true);
           Session.set('table_number',selectedTable);
+          localStorage.setItem("table", selectedTable)
           history.push('/dashboard');
       } else {
           isNotLoading();
@@ -64,7 +66,8 @@ export function LoginForm(props) {
 
   //show available tables
   const showTables = () => {
-    Axios.get("http://localhost:3001/tables/getTables", {}).then((response) => {
+    
+    Axios.get(`${process.env.REACT_APP_BASE_URL}/tables/getTables`, {}).then((response) => {
         settableNumber(response.data);
     });
   };

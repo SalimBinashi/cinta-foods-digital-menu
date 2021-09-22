@@ -24,7 +24,8 @@ function Dashboard() {
   };
   //activate table function
   const activateTable = () => {
-    Axios.patch("http://localhost:3001/tables/updateTable", {
+    
+    Axios.patch(`${process.env.REACT_APP_BASE_URL}/tables/updateTable`, {
       table_number: tableNumber,
       status: "online",
     }).then((response) => {

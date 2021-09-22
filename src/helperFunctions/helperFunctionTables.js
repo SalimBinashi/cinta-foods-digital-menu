@@ -1,6 +1,6 @@
-import Session from 'react-session-api';
+// import Session from 'react-session-api';
 
 const getTableNumber = () => {
-    return Session.get('table_number');
+    return localStorage.getItem('table');
 }
 export default getTableNumber;

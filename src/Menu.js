@@ -10,17 +10,27 @@ import getStatus from "./helperFunctions/helperFunctionMenu";
 import Session from "react-session-api";
 import toast, { Toaster } from "react-hot-toast";
 import "./components/Dashboard/dashboard.css";
+import { mealService } from "./_services/meals";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { orderActions } from "./_redux/actions";
+require("dotenv");
 
-export default function Menu({table_number}) {
+function Menu({table_number}) {
+  let dispatch = useDispatch();
+  const state = useSelector(state => console.log(state))
   const [mainsList, setMainsList] = useState([]);
   const [drinksList, setDrinksList] = useState([]);
   const [sidesList, setSidesList] = useState([]);
   // const [allAvailable, setAllAvailable] = useState([]);
   const history = useHistory();
   const [tableNumber, setTableNumber] = useState('');
+  const [order, setOrder] = useState([{
+    table_number: '',
+    orders: '',
+    total: ''
+  }])
 
-
-
+console.log(tableNumber)
   // use effect method
   useEffect(() => {
     setTableNumber(getTableNumber);
@@ -39,24 +49,48 @@ export default function Menu({table_number}) {
   };
   // get mains list
   const showMains = () => {
-    Axios.get("http://localhost:3001/getMains", {}).then((response) => {
+    Axios.get(`${process.env.REACT_APP_BASE_URL}/getMains`, {}).then((response) => {
       setMainsList(response.data);
     });
   };
 
   // get drinks list
   const showDrinks = () => {
-    Axios.get("http://localhost:3001/getDrinks", {}).then((response) => {
+    
+    Axios.get(`${process.env.REACT_APP_BASE_URL}/getDrinks`, {}).then((response) => {
       setDrinksList(response.data);
     });
   };
 
   // get sides list
   const showSides = () => {
-    Axios.get("http://localhost:3001/getSides", {}).then((response) => {
+    
+    Axios.get(`${process.env.REACT_APP_BASE_URL}/getSides`, {}).then((response) => {
       setSidesList(response.data);
     });
   };
+
+  const postOrder = () => {
+    mealService.postOrder(order)
+    .then(res => {
+      setTimeout(() => {
+        toast.success(
+          "Your order has been made successfully"
+          );
+      }, 400);
+    })
+    .catch(err => {
+      setTimeout(() => {
+        toast.error(
+          "Oops! Something went wrong. Kindly try again"
+          );
+      }, 400);
+
+    })
+    .finally(() => {
+      history.push('/menu');
+    })
+  }
 
   // Json iterator
   var jsonQuery = require("json-query");
@@ -85,7 +119,8 @@ export default function Menu({table_number}) {
 
   //activate table function
   const deactivateTable = () => {
-    Axios.patch("http://localhost:3001/tables/updateTable", {
+    
+    Axios.patch(`${process.env.REACT_APP_BASE_URL}/tables/updateTable`, {
       table_number: tableNumber,
       status: "offline",
     }).then((response) => {
@@ -112,10 +147,10 @@ export default function Menu({table_number}) {
       <Provider>
         <div className="menu">
           <img src="./cinta foods 2.png" alt="Cinta Foods Restaurant"/> <p><i>Please scroll to make order</i></p>
-          <Mains meals={mainMeal} />
+          <Mains setOrder={(value) => setOrder(value)} meals={mainMeal} />
           <aside className="aside">
-            <Extras type="Sides" items={mainSides} />
-            <Extras type="Drinks" items={mainDrinks} />
+            <Extras setOrder={(value) => setOrder(value)} type="Sides" items={mainSides} />
+            <Extras setOrder={(value) => setOrder(value)} type="Drinks" items={mainDrinks} />
           </aside>
           <Total data={allAvailable} />
           <button
@@ -129,7 +164,7 @@ export default function Menu({table_number}) {
               className="submit"
               type="submit"
               name="status"
-              onClick={deactivateTable}>
+              onClick={() => postOrder()}>
               <span>Make Order </span>
             </button>
             <Toaster/>
@@ -138,3 +173,23 @@ export default function Menu({table_number}) {
     </div>
   );
 }
+
+function mapStateToProps(state){
+
+  return {
+    state
+  }
+
+}
+
+function actionCreators(dispatch, props){
+  return {
+    postOrder: (order) => {
+      dispatch(
+        orderActions.makeorder(order)
+      )
+    }
+  }
+}
+
+export default connect(mapStateToProps, actionCreators)(Menu)
