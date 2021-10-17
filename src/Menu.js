@@ -78,6 +78,8 @@ console.log(tableNumber)
           "Your order has been made successfully"
           );
       }, 400);
+      history.push('/menu');
+
     })
     .catch(err => {
       setTimeout(() => {
@@ -88,7 +90,6 @@ console.log(tableNumber)
 
     })
     .finally(() => {
-      history.push('/menu');
     })
   }
 
