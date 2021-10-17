@@ -35,7 +35,7 @@
     "styled-components": "^5.3.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.13"
   },
   "scripts": {
     "start": "react-scripts start",
