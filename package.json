@@ -2,6 +2,7 @@
   "name": "cinta-foods-digital-menu",
   "version": "1.0.0",
   "description": "A React Menu customized with a backend system",
+  "type":"module",
   "keywords": [
     "react"
   ],
