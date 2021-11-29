@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A React Menu customized with a backend system",
   "type":"module",
+  "homepage":"https://cintafoodsmenu.herokuapp.com/",
   "keywords": [
     "react"
   ],
